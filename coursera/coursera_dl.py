@@ -56,6 +56,7 @@ import tempfile
 import time
 import urllib
 import urllib2
+from lxml import etree
 
 try:
     from BeautifulSoup import BeautifulSoup
@@ -564,24 +565,23 @@ def parse_syllabus(page, reverse=False):
     sections = []
     soup = BeautifulSoup(page)
 
-    # traverse sections
-    for stag in soup.findAll(attrs={'class':
-                                    re.compile('^course-item-list-header')}):
-        assert stag.contents[0] is not None, "couldn't find section"
-        section_name = clean_filename(stag.contents[0].contents[1])
+    parser = etree.HTMLParser()
+    doc = etree.parse(StringIO.StringIO(page), parser)
+    for stag in doc.xpath("//div[contains(@class, 'course-item-list-header')]"):
+        section_name = clean_filename(stag.xpath('h3//text()')[0])
         logging.info(section_name)
-        lectures = []  # resources for 1 lecture
+        lectures = [] # resources for 1 lecture
 
         # traverse resources (e.g., video, ppt, ..)
-        for vtag in stag.nextSibling.findAll('li'):
-            assert vtag.a.contents[0], "couldn't get lecture name"
-            vname = clean_filename(vtag.a.contents[0])
+        for vtag in stag.getnext().findall('li'):
+            assert vtag.xpath('a/text()')[0], "couldn't get lecture name"
+            vname = clean_filename(vtag.xpath('a/text()')[0])
             logging.info('  %s', vname)
             lecture = {}
             lecture_page = None
 
-            for a in vtag.findAll('a'):
-                href = a['href']
+            for a in vtag.findall('.//a'):
+                href = a.get('href')
                 fmt = get_anchor_format(href)
                 logging.debug('    %s %s', fmt, href)
                 if fmt:
@@ -599,7 +599,7 @@ def parse_syllabus(page, reverse=False):
             # Special case: we possibly have hidden video links---thanks to
             # the University of Washington for that.
             if 'mp4' not in lecture:
-                for a in vtag.findAll('a'):
+                for a in vtag.findall('.//a'):
                     if a.get('data-modal-iframe'):
                         href = grab_hidden_video_url(a['data-modal-iframe'])
                         fmt = 'mp4'
