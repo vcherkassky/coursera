@@ -46,8 +46,10 @@ Features
 Directions
 ----------
 
-Requires Python 2.6 (or newer) and a free Coursera account enrolled in
-the class of interest.
+Requires Python 2 (2.6 or newer) and a free Coursera account enrolled in
+the class of interest.  Note: You must already have (manually) agreed to
+the Honor of Code of the particular couses that you want to use with
+`coursera-dl`.
 
 1\. Install any missing dependencies.
 
@@ -63,12 +65,16 @@ the class of interest.
   * [Argparse][6]: Only necessary if using Python 2.6.
     - Ubuntu/Debian: `sudo apt-get install python-argparse`
     - Other: `easy_install argparse`
-  * [easy_install][7]: Only necessary if not using prepackaged dependencies.
-    - Ubuntu/Debian: `sudo apt-get install python-setuptools`
   * [html5lib][15]: Recommended if using Beautiful Soup 4.
     - Ubuntu/Debian: `sudo apt-get install python-html5lib`
     - Mac OSX + MacPorts: `sudo port install py-html5lib`
     - Other: `easy_install html5lib`
+  * [requests][16]
+    - Ubuntu/Debian: `sudo apt-get install python-requests`
+    - Mac OSX + MacPorts: `sudo port install requests`
+    - Other: `easy_install requests`
+  * [easy_install][7]: Only necessary if not using prepackaged dependencies.
+    - Ubuntu/Debian: `sudo apt-get install python-setuptools`
 
 On Mac OSX using MacPorts, the following may be used:
 
@@ -113,9 +119,6 @@ instead.  This is especially convenient, as typing usernames and passwords
 directly on the command line can get tiresome (even more if you happened to
 choose a "strong" password).
 
-\* if this works on Windows, please add additional instructions for it if
-any are needed.
-
 Troubleshooting
 ---------------
 
@@ -134,7 +137,9 @@ Troubleshooting
     `https://class.coursera.org/<CLASS_NAME>/class/index`
 
 * One can export a Netscape-style cookies file with a browser
-  extension ([1][9], [2][10]) and use it with the `-c` option. This comes in handy when the authentication via password is not working (the authentication process changes now and then).
+  extension ([1][9], [2][10]) and use it with the `-c` option. This comes in
+  handy when the authentication via password is not working (the
+  authentication process changes now and then).
 
 * If results show 0 sections, you most likely have provided invalid
   credentials (username and/or password in the command line or in your
@@ -215,3 +220,4 @@ first last at geemail dotcom or [@jplehmann][12]
 [13]: http://techcrunch.com/2013/02/20/coursera-adds-29-schools-90-courses-and-4-new-languages-to-its-online-learning-platform
 [14]: http://www.tunapanda.org
 [15]: https://github.com/html5lib/html5lib-python
+[16]: http://docs.python-requests.org/en/latest/
